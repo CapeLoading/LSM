@@ -119,3 +119,73 @@ class MainWidget(QWidget):
 
         # Align columns to the left
         layout.addStretch()
+
+class MainWindow(QWidget):
+    """The master window fusing TopBar and MainWidget together."""
+
+    def __init__(self) -> None:
+        """Set up main window settings, layouts, and sub-widgets."""
+        super().__init__()
+        self.setWindowTitle("Linux Sound Manager")
+        self.setObjectName("MainWindow")
+
+        # Applying background color directly to the main window container
+        self.setStyleSheet("#MainWindow { background-color: #222A2F; }")
+
+        # Global vertical layout
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(5, 0, 0, 5)
+        main_layout.setSpacing(5) # Space between TopBar and MainWidget
+
+        # Instantiate the modular components
+        self.top_bar = TopBar(self)
+        self.main_widget = MainWidget(self)
+
+        # Add components to the main layout
+        main_layout.addWidget(self.top_bar)
+        main_layout.addWidget(self.main_widget)
+
+        # Connect signals from TopBar to MainWindow slots
+        self.connect_signals()
+
+    def connect_signals(self) -> None:
+        """Connect all navigation button click signals to their slots."""
+        self.top_bar.mixer_btn.clicked.connect(self.on_mixer_clicked)
+        self.top_bar.game_btn.clicked.connect(self.on_game_clicked)
+        self.top_bar.chat_btn.clicked.connect(self.on_chat_clicked)
+        self.top_bar.media_btn.clicked.connect(self.on_media_clicked)
+        self.top_bar.aux_btn.clicked.connect(self.on_aux_clicked)
+        self.top_bar.mic_btn.clicked.connect(self.on_mic_clicked)
+
+    # --- Navigation Slots ---
+
+    def on_mixer_clicked(self) -> None:
+        """Triggered when the Mixer button is clicked."""
+        print("View switched to: Mixer")
+
+    def on_game_clicked(self) -> None:
+        """Triggered when the Game button is clicked."""
+        print("View switched to: Game")
+
+    def on_chat_clicked(self) -> None:
+        """Triggered when the Chat button is clicked."""
+        print("View switched to: Chat")
+
+    def on_media_clicked(self) -> None:
+        """Triggered when the Media button is clicked."""
+        print("View switched to: Media")
+
+    def on_aux_clicked(self) -> None:
+        """Triggered when the Aux button is clicked."""
+        print("View switched to: Aux")
+
+    def on_mic_clicked(self) -> None:
+        """Triggered when the Mic button is clicked."""
+        print("View switched to: Mic")
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
