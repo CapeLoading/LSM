@@ -82,3 +82,40 @@ class TopBar(QFrame):
 
         # Flexible spacer to push all buttons to the left side
         layout.addStretch()
+
+class MainWidget(QWidget):
+    """The main body area managing the 6 audio channel columns."""
+
+    def __init__(self, parent: QWidget = None) -> None:
+        """Initialize the layout and create the audio channel columns."""
+        super().__init__(parent)
+
+        # Horizontal layout for the 6 columns
+        layout = QHBoxLayout(self)
+        layout.setSpacing(8) # 8px gap between columns
+        layout.setContentsMargins(0, 0, 0, 0)
+
+        # First column is 230px wide, the next 5 are 210px wide
+        widths = (230, 210, 210, 210, 210, 210)
+
+        for i, width in enumerate(widths, 1):
+            col = QFrame()
+            col.setStyleSheet(
+                "background-color: #34495e; border-radius: 6px;"
+            )
+            col.setFixedWidth(width)
+            col.setSizePolicy(
+                QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding
+            )
+
+            # Inside column layout
+            col_layout = QVBoxLayout(col)
+            label_col = QLabel(f"Col {i}\n({width}px)")
+            label_col.setStyleSheet("color: #ecf0f1; font-weight: bold;")
+            label_col.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            col_layout.addWidget(label_col)
+
+            layout.addWidget(col)
+
+        # Align columns to the left
+        layout.addStretch()
